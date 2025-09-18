@@ -108,17 +108,17 @@ springdoc:
   swagger-ui:
     path: /swagger-ui.html
 
-knife4j:
-  enable: true
-  setting:
-    language: zh-CN
-    enable-footer: false
-    enable-filter: true
-    enable-group: true
-    enable-debug: true
-    enable-openapi: true
-  basic:
-    enable: false
+#knife4j:
+#  enable: true
+#  setting:
+#    language: zh-CN
+#    enable-footer: false
+#    enable-filter: true
+#    enable-group: true
+#    enable-debug: true
+#    enable-openapi: true
+#  basic:
+#    enable: false
 
 
 # 日志配置
