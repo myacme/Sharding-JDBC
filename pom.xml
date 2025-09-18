@@ -63,11 +63,18 @@
             <version>8.0.33</version>
         </dependency>
 
-        <!-- Swagger UI -->
+        <!-- SpringDoc OpenAPI 3 (Swagger 3) -->
         <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-boot-starter</artifactId>
-            <version>3.0.0</version>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>1.7.0</version>
+        </dependency>
+
+        <!-- Knife4j UI for SpringDoc (OpenAPI 3, Spring Boot 2.x) -->
+        <dependency>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-openapi3-ui</artifactId>
+            <version>4.4.0</version>
         </dependency>
 
         <!-- Lombok -->

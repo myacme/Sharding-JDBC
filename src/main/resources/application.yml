@@ -100,18 +100,25 @@ mybatis:
     map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
-# Swagger配置
-springfox:
-  documentation:
-    swagger-ui:
-      enabled: true
-    swagger:
-      v2:
-        enabled: true
-
+# SpringDoc OpenAPI 3 配置（Knife4j）
 springdoc:
+  api-docs:
+    path: /v3/api-docs
+    enabled: true
   swagger-ui:
     path: /swagger-ui.html
+
+knife4j:
+  enable: true
+  setting:
+    language: zh-CN
+    enable-footer: false
+    enable-filter: true
+    enable-group: true
+    enable-debug: true
+    enable-openapi: true
+  basic:
+    enable: false
 
 
 # 日志配置

@@ -2,9 +2,9 @@ package com.example.shardingjdbc.controller;
 
 import com.example.shardingjdbc.entity.User;
 import com.example.shardingjdbc.service.UserService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,16 +20,16 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequestMapping("/api/users")
-@Api(tags = "用户管理")
+@Tag(name = "用户管理", description = "用户相关接口")
 public class UserController {
     
     @Autowired
     private UserService userService;
     
     @PostMapping
-    @ApiOperation("创建用户")
+    @Operation(summary = "创建用户", description = "创建新的用户")
     public ResponseEntity<Map<String, Object>> createUser(
-            @ApiParam("用户信息") @RequestBody User user) {
+            @Parameter(description = "用户信息") @RequestBody User user) {
         try {
             User createdUser = userService.createUser(user);
             Map<String, Object> result = new HashMap<>();
@@ -47,9 +47,9 @@ public class UserController {
     }
     
     @GetMapping("/{userId}")
-    @ApiOperation("根据用户ID查询用户")
+    @Operation(summary = "根据用户ID查询用户", description = "通过用户ID获取用户详细信息")
     public ResponseEntity<Map<String, Object>> getUserById(
-            @ApiParam("用户ID") @PathVariable Long userId) {
+            @Parameter(description = "用户ID") @PathVariable Long userId) {
         try {
             User user = userService.getUserById(userId);
             Map<String, Object> result = new HashMap<>();
@@ -72,9 +72,9 @@ public class UserController {
     }
     
     @GetMapping("/username/{username}")
-    @ApiOperation("根据用户名查询用户")
+    @Operation(summary = "根据用户名查询用户", description = "通过用户名获取用户详细信息")
     public ResponseEntity<Map<String, Object>> getUserByUsername(
-            @ApiParam("用户名") @PathVariable String username) {
+            @Parameter(description = "用户名") @PathVariable String username) {
         try {
             User user = userService.getUserByUsername(username);
             Map<String, Object> result = new HashMap<>();
@@ -97,7 +97,7 @@ public class UserController {
     }
     
     @GetMapping
-    @ApiOperation("查询所有用户")
+    @Operation(summary = "查询所有用户", description = "获取所有用户列表")
     public ResponseEntity<Map<String, Object>> getAllUsers() {
         try {
             List<User> users = userService.getAllUsers();
@@ -117,10 +117,10 @@ public class UserController {
     }
     
     @PutMapping("/{userId}")
-    @ApiOperation("更新用户信息")
+    @Operation(summary = "更新用户信息", description = "修改用户的详细信息")
     public ResponseEntity<Map<String, Object>> updateUser(
-            @ApiParam("用户ID") @PathVariable Long userId,
-            @ApiParam("用户信息") @RequestBody User user) {
+            @Parameter(description = "用户ID") @PathVariable Long userId,
+            @Parameter(description = "用户信息") @RequestBody User user) {
         try {
             user.setUserId(userId);
             User updatedUser = userService.updateUser(user);
@@ -139,9 +139,9 @@ public class UserController {
     }
     
     @DeleteMapping("/{userId}")
-    @ApiOperation("删除用户")
+    @Operation(summary = "删除用户", description = "根据用户ID删除用户")
     public ResponseEntity<Map<String, Object>> deleteUser(
-            @ApiParam("用户ID") @PathVariable Long userId) {
+            @Parameter(description = "用户ID") @PathVariable Long userId) {
         try {
             boolean success = userService.deleteUser(userId);
             Map<String, Object> result = new HashMap<>();
@@ -163,10 +163,10 @@ public class UserController {
     }
     
     @GetMapping("/page")
-    @ApiOperation("分页查询用户")
+    @Operation(summary = "分页查询用户", description = "分页获取用户列表")
     public ResponseEntity<Map<String, Object>> getUsersByPage(
-            @ApiParam("页码") @RequestParam(defaultValue = "1") int pageNum,
-            @ApiParam("每页大小") @RequestParam(defaultValue = "10") int pageSize) {
+            @Parameter(description = "页码") @RequestParam(defaultValue = "1") int pageNum,
+            @Parameter(description = "每页大小") @RequestParam(defaultValue = "10") int pageSize) {
         try {
             List<User> users = userService.getUsersByPage(pageNum, pageSize);
             int total = userService.getUserCount();

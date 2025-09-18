@@ -15,8 +15,11 @@ public class ShardingJdbcDemoApplication {
         SpringApplication.run(ShardingJdbcDemoApplication.class, args);
         System.out.println("=================================");
         System.out.println("Sharding-JDBC Demo 启动成功！");
-        System.out.println("Swagger UI: http://localhost:8080/swagger-ui/");
-        System.out.println("API文档: http://localhost:8080/v2/api-docs");
+        System.out.println("=================================");
+        System.out.println("📖 API文档访问地址：");
+        System.out.println("  • Knife4j UI: http://localhost:8080/doc.html");
+        System.out.println("  • Swagger UI: http://localhost:8080/swagger-ui.html");
+        System.out.println("  • OpenAPI JSON: http://localhost:8080/v3/api-docs");
         System.out.println("=================================");
     }
 }

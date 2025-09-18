@@ -2,9 +2,9 @@ package com.example.shardingjdbc.controller;
 
 import com.example.shardingjdbc.entity.Order;
 import com.example.shardingjdbc.service.OrderService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,16 +20,16 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequestMapping("/api/orders")
-@Api(tags = "订单管理")
+@Tag(name = "订单管理", description = "订单相关接口")
 public class OrderController {
     
     @Autowired
     private OrderService orderService;
     
     @PostMapping
-    @ApiOperation("创建订单")
+    @Operation(summary = "创建订单", description = "创建新的订单")
     public ResponseEntity<Map<String, Object>> createOrder(
-            @ApiParam("订单信息") @RequestBody Order order) {
+            @Parameter(description = "订单信息") @RequestBody Order order) {
         try {
             Order createdOrder = orderService.createOrder(order);
             Map<String, Object> result = new HashMap<>();
@@ -47,9 +47,9 @@ public class OrderController {
     }
     
     @GetMapping("/{orderId}")
-    @ApiOperation("根据订单ID查询订单")
+    @Operation(summary = "根据订单ID查询订单", description = "通过订单ID获取订单详细信息")
     public ResponseEntity<Map<String, Object>> getOrderById(
-            @ApiParam("订单ID") @PathVariable Long orderId) {
+            @Parameter(description = "订单ID") @PathVariable Long orderId) {
         try {
             Order order = orderService.getOrderById(orderId);
             Map<String, Object> result = new HashMap<>();
@@ -72,9 +72,9 @@ public class OrderController {
     }
     
     @GetMapping("/user/{userId}")
-    @ApiOperation("根据用户ID查询订单列表")
+    @Operation(summary = "根据用户ID查询订单列表", description = "获取指定用户的所有订单")
     public ResponseEntity<Map<String, Object>> getOrdersByUserId(
-            @ApiParam("用户ID") @PathVariable Long userId) {
+            @Parameter(description = "用户ID") @PathVariable Long userId) {
         try {
             List<Order> orders = orderService.getOrdersByUserId(userId);
             Map<String, Object> result = new HashMap<>();
@@ -93,9 +93,9 @@ public class OrderController {
     }
     
     @GetMapping("/orderNo/{orderNo}")
-    @ApiOperation("根据订单号查询订单")
+    @Operation(summary = "根据订单号查询订单", description = "通过订单号获取订单详细信息")
     public ResponseEntity<Map<String, Object>> getOrderByOrderNo(
-            @ApiParam("订单号") @PathVariable String orderNo) {
+            @Parameter(description = "订单号") @PathVariable String orderNo) {
         try {
             Order order = orderService.getOrderByOrderNo(orderNo);
             Map<String, Object> result = new HashMap<>();
@@ -118,7 +118,7 @@ public class OrderController {
     }
     
     @GetMapping
-    @ApiOperation("查询所有订单")
+    @Operation(summary = "查询所有订单", description = "获取所有订单列表")
     public ResponseEntity<Map<String, Object>> getAllOrders() {
         try {
             List<Order> orders = orderService.getAllOrders();
@@ -138,10 +138,10 @@ public class OrderController {
     }
     
     @PutMapping("/{orderId}")
-    @ApiOperation("更新订单信息")
+    @Operation(summary = "更新订单信息", description = "修改订单的详细信息")
     public ResponseEntity<Map<String, Object>> updateOrder(
-            @ApiParam("订单ID") @PathVariable Long orderId,
-            @ApiParam("订单信息") @RequestBody Order order) {
+            @Parameter(description = "订单ID") @PathVariable Long orderId,
+            @Parameter(description = "订单信息") @RequestBody Order order) {
         try {
             order.setOrderId(orderId);
             Order updatedOrder = orderService.updateOrder(order);
@@ -160,9 +160,9 @@ public class OrderController {
     }
     
     @DeleteMapping("/{orderId}")
-    @ApiOperation("删除订单")
+    @Operation(summary = "删除订单", description = "根据订单ID删除订单")
     public ResponseEntity<Map<String, Object>> deleteOrder(
-            @ApiParam("订单ID") @PathVariable Long orderId) {
+            @Parameter(description = "订单ID") @PathVariable Long orderId) {
         try {
             boolean success = orderService.deleteOrder(orderId);
             Map<String, Object> result = new HashMap<>();
@@ -184,10 +184,10 @@ public class OrderController {
     }
     
     @GetMapping("/page")
-    @ApiOperation("分页查询订单")
+    @Operation(summary = "分页查询订单", description = "分页获取订单列表")
     public ResponseEntity<Map<String, Object>> getOrdersByPage(
-            @ApiParam("页码") @RequestParam(defaultValue = "1") int pageNum,
-            @ApiParam("每页大小") @RequestParam(defaultValue = "10") int pageSize) {
+            @Parameter(description = "页码") @RequestParam(defaultValue = "1") int pageNum,
+            @Parameter(description = "每页大小") @RequestParam(defaultValue = "10") int pageSize) {
         try {
             List<Order> orders = orderService.getOrdersByPage(pageNum, pageSize);
             int total = orderService.getOrderCount();
@@ -210,11 +210,11 @@ public class OrderController {
     }
     
     @GetMapping("/user/{userId}/page")
-    @ApiOperation("根据用户ID分页查询订单")
+    @Operation(summary = "根据用户ID分页查询订单", description = "分页获取指定用户的订单列表")
     public ResponseEntity<Map<String, Object>> getOrdersByUserIdAndPage(
-            @ApiParam("用户ID") @PathVariable Long userId,
-            @ApiParam("页码") @RequestParam(defaultValue = "1") int pageNum,
-            @ApiParam("每页大小") @RequestParam(defaultValue = "10") int pageSize) {
+            @Parameter(description = "用户ID") @PathVariable Long userId,
+            @Parameter(description = "页码") @RequestParam(defaultValue = "1") int pageNum,
+            @Parameter(description = "每页大小") @RequestParam(defaultValue = "10") int pageSize) {
         try {
             List<Order> orders = orderService.getOrdersByUserIdAndPage(userId, pageNum, pageSize);
             int total = orderService.getOrderCountByUserId(userId);
@@ -238,10 +238,10 @@ public class OrderController {
     }
     
     @PutMapping("/{orderId}/status")
-    @ApiOperation("更新订单状态")
+    @Operation(summary = "更新订单状态", description = "修改订单的状态")
     public ResponseEntity<Map<String, Object>> updateOrderStatus(
-            @ApiParam("订单ID") @PathVariable Long orderId,
-            @ApiParam("订单状态") @RequestParam Integer status) {
+            @Parameter(description = "订单ID") @PathVariable Long orderId,
+            @Parameter(description = "订单状态") @RequestParam Integer status) {
         try {
             boolean success = orderService.updateOrderStatus(orderId, status);
             Map<String, Object> result = new HashMap<>();
