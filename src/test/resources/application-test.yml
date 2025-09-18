@@ -1,0 +1,96 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: sharding-jdbc-demo-test
+  
+  # Sharding-JDBC测试配置
+  shardingsphere:
+    datasource:
+      names: ds0,ds1
+      ds0:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://localhost:3306/sharding_db_0_test?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8&createDatabaseIfNotExist=true
+        username: root
+        password: 123456
+        hikari:
+          maximum-pool-size: 10
+          minimum-idle: 2
+          connection-timeout: 30000
+          idle-timeout: 600000
+          max-lifetime: 1800000
+      ds1:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://localhost:3306/sharding_db_1_test?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8&createDatabaseIfNotExist=true
+        username: root
+        password: 123456
+        hikari:
+          maximum-pool-size: 10
+          minimum-idle: 2
+          connection-timeout: 30000
+          idle-timeout: 600000
+          max-lifetime: 1800000
+    
+    # 分片规则配置（与主配置相同）
+    rules:
+      sharding:
+        default-data-source-name: ds0
+        
+        tables:
+          t_user:
+            actual-data-nodes: ds$->{0..1}.t_user
+            database-strategy:
+              standard:
+                sharding-column: user_id
+                sharding-algorithm-name: user-db-algorithm
+            table-strategy:
+              none:
+          
+          t_order:
+            actual-data-nodes: ds$->{0..1}.t_order_$->{0..1}
+            database-strategy:
+              standard:
+                sharding-column: user_id
+                sharding-algorithm-name: order-db-algorithm
+            table-strategy:
+              standard:
+                sharding-column: order_id
+                sharding-algorithm-name: order-table-algorithm
+        
+        sharding-algorithms:
+          user-db-algorithm:
+            type: INLINE
+            props:
+              algorithm-expression: ds$->{user_id % 2}
+          
+          order-db-algorithm:
+            type: INLINE
+            props:
+              algorithm-expression: ds$->{user_id % 2}
+          
+          order-table-algorithm:
+            type: INLINE
+            props:
+              algorithm-expression: t_order_$->{order_id % 2}
+    
+    props:
+      sql-show: true
+      sql-simple: true
+
+# MyBatis配置
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.example.shardingjdbc.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+# 日志配置
+logging:
+  level:
+    com.example.shardingjdbc: debug
+    org.apache.shardingsphere: debug
+    org.springframework.test: info
